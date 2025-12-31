@@ -13,7 +13,7 @@ CLI tool for conducting autonomous deep research using Google's Gemini Deep Rese
 
 ## How It Works
 
-The tool uses Google's Gemini Interactions API with the `deep-research-pro-preview-12-2025` agent to:
+The tool uses Google's [Gemini Deep Research API](https://ai.google.dev/gemini-api/docs/deep-research) with the `deep-research-pro-preview-12-2025` agent to:
 
 1. Submit a research query to the Deep Research Pro model
 2. Monitor the research task as it runs in the background
