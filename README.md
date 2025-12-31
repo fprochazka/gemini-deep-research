@@ -1,10 +1,12 @@
 # gemini-deep-research
 
-CLI tool for conducting autonomous deep research using Google's Gemini Deep Research Pro model.
+CLI tool for conducting autonomous deep research using Google's Gemini Deep Research Agent via the new beta Interactions API.
 
 ## Features
 
-- **Autonomous Research**: Leverages Google's Deep Research Pro model to conduct comprehensive research on any topic
+- **Autonomous Research**: Leverages Google's Deep Research Pro agent to conduct comprehensive research on any topic
+- **Analyst-Grade Reports**: Generates detailed, well-structured, and cited research reports suitable for professional use
+- **New Beta Interactions API**: Built on Google's latest Interactions API (Preview) designed for robust agentic workflows
 - **Background Processing**: Long-running research tasks execute in the background with polling for status updates
 - **Markdown Output**: Research reports are automatically saved as formatted markdown files
 - **Rich CLI Interface**: Beautiful terminal UI with progress indicators and status updates
@@ -13,14 +15,16 @@ CLI tool for conducting autonomous deep research using Google's Gemini Deep Rese
 
 ## How It Works
 
-The tool uses Google's [Gemini Deep Research API](https://ai.google.dev/gemini-api/docs/deep-research) with the `deep-research-pro-preview-12-2025` agent to:
+The tool uses Google's new **beta Interactions API** to access the [Gemini Deep Research Agent](https://ai.google.dev/gemini-api/docs/deep-research) (`deep-research-pro-preview-12-2025`). This new API architecture specifically supports long-running, autonomous agentic workflows.
 
-1. Submit a research query to the Deep Research Pro model
-2. Monitor the research task as it runs in the background
-3. Retrieve the completed research report
-4. Save the report to a timestamped markdown file
+The process involves:
 
-The Deep Research Pro model autonomously searches for information, synthesizes findings, and produces comprehensive research reports.
+1. Submitting a research query to the Deep Research agent via the Interactions API
+2. Monitoring the research task as it runs in the background (server-side execution)
+3. Retrieving the completed research report
+4. Saving the report to a timestamped markdown file
+
+The Deep Research Agent autonomously searches for information, synthesizes findings, and produces comprehensive research reports.
 
 ## Installation
 
@@ -310,14 +314,14 @@ gemini-deep-research/
 
 ## API Details
 
-This tool uses the Google GenAI Python SDK (`google-genai` package, version 1.56.0+) to interact with the Gemini Interactions API:
+This tool uses the Google GenAI Python SDK (`google-genai` package, version 1.56.0+) to interact with the **Gemini Interactions API (Public Beta)**:
 
-- `client.interactions.create()` - Start a new research interaction with the Deep Research Pro agent
+- `client.interactions.create()` - Start a new research interaction with the Deep Research agent
 - `client.interactions.get()` - Poll for interaction status and retrieve results
 
-The Deep Research Pro agent (`deep-research-pro-preview-12-2025`) is specifically designed for autonomous, comprehensive research tasks.
+The **Gemini Deep Research Agent** (`deep-research-pro-preview-12-2025`) is the first specialized agent available through this new Interactions API, designed for autonomous, comprehensive research tasks that require multi-step reasoning and tool use.
 
-The SDK provides a cleaner, more Pythonic interface compared to raw HTTP requests, with automatic authentication, type safety, and better error handling.
+The SDK provides a cleaner, more Pythonic interface compared to raw HTTP requests, with automatic authentication, type safety, and better error handling for these new beta endpoints.
 
 ## Limitations
 
