@@ -1,27 +1,42 @@
-[tool.poetry]
+[project]
 name = "gemini-deep-research"
 version = "0.1.0"
 description = "CLI tool for Google Deep Research API"
-authors = ["Filip Prochazka <dev@fprochazka.cz>"]
-packages = [{include = "gemini_deep_research"}]
+authors = [{ name = "Filip Prochazka", email = "dev@fprochazka.cz" }]
+requires-python = ">=3.10,<4"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "typer>=0.15.0,<0.16",
+    "rich>=13.7.0,<14",
+    "python-dotenv>=1.0.0,<2",
+    "google-genai>=1.56.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-typer = {extras = ["all"], version = "^0.15.0"}
-rich = "^13.7.0"
-python-dotenv = "^1.0.0"
-google-genai = ">=1.56.0"
+[project.scripts]
+gemini-deep-research = "gemini_deep_research.main:app"
 
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.14.0"
-pytest = "^9.0.2"
+[dependency-groups]
+dev = [
+    "ruff>=0.14.0,<0.15",
+    "pytest>=9.0.2,<10",
+]
+
+[tool.uv]
+
+[tool.uv.build-backend]
+module-name = ["gemini_deep_research"]
+module-root = ""
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-gemini-deep-research = "gemini_deep_research.main:app"
+requires = ["uv_build>=0.10.1,<0.11.0"]
+build-backend = "uv_build"
 
 [tool.ruff]
 line-length = 120
