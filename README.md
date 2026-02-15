@@ -39,37 +39,9 @@ pipx install -e .
 
 After installation, the `gemini-deep-research` command will be available globally.
 
-## Claude Code Skill (Optional)
+## Claude Code
 
-For users of Claude Code, a skill is available that teaches Claude how to efficiently use the `gemini-deep-research` CLI tool. The skill includes:
-
-- Typical workflow for conducting deep research
-- Important notes about long-running operations (3-10+ minutes)
-- Command documentation with examples
-- How to read and present research results
-
-### Installing the Skill
-
-**For Claude Code (CLI)** - Global installation (available in all projects):
-
-```bash
-# Copy the skill directory to your global Claude Code skills directory
-cp -r usage/claude-code-skill/gemini-deep-research ~/.claude/skills/
-```
-
-**For Claude Code (CLI)** - Project-specific installation (available only in this project):
-
-```bash
-# Copy the skill directory to your project's .claude/skills directory
-mkdir -p .claude/skills
-cp -r usage/claude-code-skill/gemini-deep-research .claude/skills/
-```
-
-**For Claude.ai or Claude Desktop** - Use the packaged skill file:
-
-The `usage/claude-code-skill/gemini-deep-research.skill` file can be uploaded through Settings > Capabilities > Skills.
-
-After installation, Claude will automatically use the skill when conducting deep research.
+A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill is available for this project, allowing Claude to use the `gemini-deep-research` CLI autonomously. See [gemini-deep-research skill](https://github.com/fprochazka/claude-code-plugins/tree/master/plugins/gemini-deep-research) for installation and usage instructions.
 
 ## Configuration
 
@@ -306,8 +278,6 @@ gemini-deep-research/
 ├── gemini_deep_research/     - Main package directory
 │   ├── main.py              - CLI application entry point
 │   ├── api.py               - Gemini Interactions API client
-├── usage/                   - Usage examples and integrations
-│   └── claude-code-skill/   - Claude Code skill for this tool
 ├── pyproject.toml           - Poetry configuration and dependencies
 └── .env.example             - Example environment configuration
 ```
