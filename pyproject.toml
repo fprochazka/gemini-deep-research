@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.scripts]
-gemini-deep-research = "gemini_deep_research.main:app"
+gemini-deep-research = "gemini_deep_research.main:cli"
 
 [dependency-groups]
 dev = [

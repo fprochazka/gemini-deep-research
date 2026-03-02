@@ -1,7 +1,7 @@
 """Main CLI application for Deep Research."""
 
-import logging
 import os
+import sys
 import time
 from typing import Annotated
 
@@ -12,6 +12,7 @@ from rich.console import Console
 
 from . import service
 from .api import DeepResearchAPI
+from .logging import error_console, setup_logging
 from .models import (
     InteractionState,
     InteractionStatus,
@@ -23,9 +24,6 @@ from .models import (
 
 # Load environment variables from .env if it exists
 load_dotenv()
-
-# Configure logging
-logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
 
 app = typer.Typer(
     rich_markup_mode=None,
@@ -96,6 +94,7 @@ def display_status(status: InteractionStatus) -> None:
 
 @app.command()
 def research(
+    ctx: typer.Context,
     query: Annotated[str, typer.Argument(help="The research topic or question.")],
     poll_interval: Annotated[
         int, typer.Option("--poll-interval", "-i", help="Interval in seconds between polling for results.")
@@ -159,12 +158,15 @@ def research(
             raise typer.Exit(code=1)
 
     except Exception as e:
-        rprint(f"[red]Error:[/red] {str(e)}")
+        error_console.print(f"[red]Error:[/red] {str(e)}")
+        if ctx.obj.get("verbose"):
+            error_console.print_exception()
         raise typer.Exit(code=1) from None
 
 
 @app.command()
 def status(
+    ctx: typer.Context,
     interaction_id: Annotated[str, typer.Argument(help="The interaction ID to check status for.")],
 ):
     """
@@ -176,12 +178,15 @@ def status(
         status_result = service.get_interaction_status(api, interaction_id)
         display_status(status_result)
     except Exception as e:
-        rprint(f"[red]Error checking status:[/red] {str(e)}")
+        error_console.print(f"[red]Error checking status:[/red] {str(e)}")
+        if ctx.obj.get("verbose"):
+            error_console.print_exception()
         raise typer.Exit(code=1) from None
 
 
 @app.command(name="fetch-results")
 def fetch_results(
+    ctx: typer.Context,
     interaction_id: Annotated[str, typer.Argument(help="The interaction ID to fetch results for.")],
 ):
     """
@@ -204,23 +209,24 @@ def fetch_results(
         rprint("[dim]Use 'gemini-deep-research status <ID>' to check progress[/dim]")
         raise typer.Exit(code=0) from None
     except Exception as e:
-        rprint(f"[red]Error fetching results:[/red] {str(e)}")
+        error_console.print(f"[red]Error fetching results:[/red] {str(e)}")
+        if ctx.obj.get("verbose"):
+            error_console.print_exception()
         raise typer.Exit(code=1) from None
 
 
 @app.callback(invoke_without_command=True)
 def callback(
     ctx: typer.Context,
-    verbose: Annotated[bool, typer.Option("--verbose", "-v", help="Enable verbose debug logging")] = False,
+    verbose: Annotated[
+        bool, typer.Option("--verbose", "-v", help="Enable verbose debug logging.", is_eager=True)
+    ] = False,
 ):
     """
     Deep Research CLI - Powered by Gemini Deep Research Pro
     """
-    # Configure logging level based on verbose flag
-    if verbose:
-        logging.getLogger().setLevel(logging.DEBUG)
+    setup_logging(verbose=verbose)
 
-    # Store verbose flag in context for commands to access if needed
     ctx.ensure_object(dict)
     ctx.obj["verbose"] = verbose
 
@@ -228,5 +234,30 @@ def callback(
         rprint(ctx.get_help())
 
 
-if __name__ == "__main__":
+_GLOBAL_OPTIONS = {"--verbose", "-v"}
+
+
+def _hoist_global_options(argv: list[str]) -> list[str]:
+    """Move global options to before the first subcommand.
+
+    Typer/Click requires group-level options to appear before subcommands.
+    This function allows users to place --verbose anywhere in the command line.
+    """
+    global_opts: list[str] = []
+    rest: list[str] = []
+    for arg in argv:
+        if arg in _GLOBAL_OPTIONS:
+            global_opts.append(arg)
+        else:
+            rest.append(arg)
+    return global_opts + rest
+
+
+def cli() -> None:
+    """CLI entry point with global option hoisting."""
+    sys.argv[1:] = _hoist_global_options(sys.argv[1:])
     app()
+
+
+if __name__ == "__main__":
+    cli()
