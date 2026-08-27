@@ -1,0 +1,20 @@
+{
+  "name": "fprochazka-gemini-deep-research",
+  "description": "CLI for autonomous deep research with Google's Gemini Deep Research Agent, with a skill for Claude Code",
+  "owner": {
+    "name": "Filip Procházka"
+  },
+  "plugins": [
+    {
+      "name": "gemini-deep-research",
+      "description": "Skill for conducting autonomous deep research using Google's Gemini Deep Research Agent",
+      "version": "1.0.0",
+      "author": {
+        "name": "Filip Procházka",
+        "url": "https://github.com/fprochazka"
+      },
+      "source": "./coding-agent-plugins/claude-code",
+      "homepage": "https://github.com/fprochazka/gemini-deep-research"
+    }
+  ]
+}

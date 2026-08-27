@@ -41,7 +41,31 @@ After installation, the `gemini-deep-research` command will be available globall
 
 ## Claude Code
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill is available for this project, allowing Claude to use the `gemini-deep-research` CLI autonomously. See [gemini-deep-research skill](https://github.com/fprochazka/claude-code-plugins/tree/master/plugins/gemini-deep-research) for installation and usage instructions.
+This repository is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace. The plugin ships a skill that teaches Claude how to use the `gemini-deep-research` CLI: start a research task, monitor it, and retrieve the report. It does not install the CLI itself — install that first, see [Installation](#installation).
+
+```bash
+claude plugin marketplace add fprochazka/gemini-deep-research --scope user
+claude plugin install gemini-deep-research@fprochazka-gemini-deep-research --scope user
+```
+
+To upgrade after a new release:
+
+```bash
+claude plugin marketplace update fprochazka-gemini-deep-research
+claude plugin update gemini-deep-research@fprochazka-gemini-deep-research
+```
+
+The skill's `allowed-tools` frontmatter auto-allows every `gemini-deep-research` command. To let the skill load without a prompt, add it to `~/.claude/settings.json`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Skill(gemini-deep-research)"
+    ]
+  }
+}
+```
 
 ## Configuration
 
